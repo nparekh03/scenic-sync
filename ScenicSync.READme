@@ -1,0 +1,15 @@
+# ScenicSync 🚗
+
+**Discover scenic drives. Skip the boring routes.**
+
+This Streamlit app helps you explore curated scenic routes in the Northeast US and syncs them directly to Google Maps.
+
+### Features:
+- Pick from beautiful, pre-selected road trips
+- Auto-generated scenic stops
+- Get a sharable Google Maps link
+- No installation required (if hosted)
+
+### How to Run:
+```bash
+streamlit run scenic_sync_googlemaps.py
