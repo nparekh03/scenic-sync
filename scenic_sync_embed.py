@@ -2,7 +2,7 @@ import streamlit as st
 from urllib.parse import quote
 
 # Your Google Maps Embed API key
-GMAPS_API_KEY = "AIzaSyBpsOCGwy82uMRA0rqBI8wtT3HggI9nUQA"
+GMAPS_API_KEY = ""
 
 # Define scenic route options
 ROUTES = {
