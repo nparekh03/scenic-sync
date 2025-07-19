@@ -26,20 +26,42 @@ def main():
     
     # Get API key from Streamlit secrets (this ensures it's loaded after Streamlit starts)
     api_key = ""
+    
+    # Debug: Show what's available
+    st.write("🔍 Debug: Checking API key sources...")
+    
     try:
-        if hasattr(st, 'secrets') and st.secrets.get("GOOGLE_MAPS_API_KEY"):
-            api_key = st.secrets["GOOGLE_MAPS_API_KEY"]
-            st.write("✅ API Key loaded from Streamlit secrets")
+        # Check if st.secrets exists
+        if hasattr(st, 'secrets'):
+            st.write("✅ st.secrets is available")
+            
+            # Check if GOOGLE_MAPS_API_KEY is in secrets
+            if "GOOGLE_MAPS_API_KEY" in st.secrets:
+                api_key = st.secrets["GOOGLE_MAPS_API_KEY"]
+                st.write(f"✅ API Key loaded from Streamlit secrets: {api_key[:10]}...")
+            else:
+                st.write("⚠️ GOOGLE_MAPS_API_KEY not found in st.secrets")
+                st.write(f"Available secrets: {list(st.secrets.keys()) if hasattr(st.secrets, 'keys') else 'None'}")
         else:
-            # Fallback to environment variable
+            st.write("⚠️ st.secrets is not available")
+        
+        # Fallback to environment variable
+        if not api_key:
             import os
             api_key = os.getenv("GOOGLE_MAPS_API_KEY", "")
             if api_key:
-                st.write("✅ API Key loaded from environment variable")
+                st.write(f"✅ API Key loaded from environment variable: {api_key[:10]}...")
             else:
-                st.write("⚠️ No API key found")
+                st.write("⚠️ No API key found in environment variables")
+                
     except Exception as e:
         st.write(f"⚠️ Error loading API key: {e}")
+    
+    # Show final API key status
+    if api_key:
+        st.write(f"🎯 Final API key status: {'Valid' if len(api_key) > 20 else 'Invalid'} ({len(api_key)} characters)")
+    else:
+        st.write("❌ No API key available")
     
     # Initialize services
     maps_service = GoogleMapsServices(api_key)
