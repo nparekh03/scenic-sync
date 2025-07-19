@@ -16,8 +16,13 @@ try:
     import streamlit as st
     if hasattr(st, 'secrets') and st.secrets.get("GOOGLE_MAPS_API_KEY"):
         GOOGLE_MAPS_API_KEY = st.secrets["GOOGLE_MAPS_API_KEY"]
+        print(f"✅ API Key loaded from Streamlit secrets: {GOOGLE_MAPS_API_KEY[:10]}...")
+    else:
+        print(f"⚠️ No API key found in Streamlit secrets. Current key: {GOOGLE_MAPS_API_KEY[:10] if GOOGLE_MAPS_API_KEY else 'None'}...")
 except ImportError:
-    pass
+    print("⚠️ Streamlit not available, using environment variables only")
+except Exception as e:
+    print(f"⚠️ Error loading secrets: {e}")
 
 # Google Maps API endpoints
 GOOGLE_GEOCODING_URL = "https://maps.googleapis.com/maps/api/geocode/json"

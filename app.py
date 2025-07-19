@@ -24,8 +24,25 @@ def main():
     # Apply styling
     apply_custom_css()
     
+    # Get API key from Streamlit secrets (this ensures it's loaded after Streamlit starts)
+    api_key = ""
+    try:
+        if hasattr(st, 'secrets') and st.secrets.get("GOOGLE_MAPS_API_KEY"):
+            api_key = st.secrets["GOOGLE_MAPS_API_KEY"]
+            st.write("✅ API Key loaded from Streamlit secrets")
+        else:
+            # Fallback to environment variable
+            import os
+            api_key = os.getenv("GOOGLE_MAPS_API_KEY", "")
+            if api_key:
+                st.write("✅ API Key loaded from environment variable")
+            else:
+                st.write("⚠️ No API key found")
+    except Exception as e:
+        st.write(f"⚠️ Error loading API key: {e}")
+    
     # Initialize services
-    maps_service = GoogleMapsServices(GOOGLE_MAPS_API_KEY)
+    maps_service = GoogleMapsServices(api_key)
     scenic_routes = get_scenic_routes()
     place_types = get_place_type_options()
     
