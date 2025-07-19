@@ -35,13 +35,20 @@ def main():
         if hasattr(st, 'secrets'):
             st.write("✅ st.secrets is available")
             
+            # Show all available secrets (for debugging)
+            if hasattr(st.secrets, 'keys'):
+                available_secrets = list(st.secrets.keys())
+                st.write(f"📋 Available secrets: {available_secrets}")
+            else:
+                st.write("📋 No secrets keys available")
+            
             # Check if GOOGLE_MAPS_API_KEY is in secrets
             if "GOOGLE_MAPS_API_KEY" in st.secrets:
                 api_key = st.secrets["GOOGLE_MAPS_API_KEY"]
                 st.write(f"✅ API Key loaded from Streamlit secrets: {api_key[:10]}...")
             else:
                 st.write("⚠️ GOOGLE_MAPS_API_KEY not found in st.secrets")
-                st.write(f"Available secrets: {list(st.secrets.keys()) if hasattr(st.secrets, 'keys') else 'None'}")
+                st.write("💡 Make sure you've set the secret in Streamlit Cloud dashboard")
         else:
             st.write("⚠️ st.secrets is not available")
         
@@ -62,6 +69,12 @@ def main():
         st.write(f"🎯 Final API key status: {'Valid' if len(api_key) > 20 else 'Invalid'} ({len(api_key)} characters)")
     else:
         st.write("❌ No API key available")
+        st.write("🔧 **To fix this:**")
+        st.write("1. Go to Streamlit Cloud dashboard")
+        st.write("2. Find your ScenicSync app")
+        st.write("3. Go to Settings → Secrets")
+        st.write("4. Add: `GOOGLE_MAPS_API_KEY = \"your_api_key_here\"`")
+        st.write("5. Save and restart the app")
     
     # Initialize services
     maps_service = GoogleMapsServices(api_key)
