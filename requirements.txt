@@ -11,8 +11,7 @@ requests==2.31.0
 # Environment variable management
 python-dotenv==1.0.0
 
-# Data processing - Python 3.13 compatible versions
-pandas==2.1.4
+# Data processing - Python 3.13 compatible
 numpy==1.26.4
 
 # Additional utilities
