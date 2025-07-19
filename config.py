@@ -8,7 +8,16 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Google Maps API Configuration
+# Try to get API key from environment variables or Streamlit secrets
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY", "")
+
+# If running in Streamlit, try to get from secrets
+try:
+    import streamlit as st
+    if hasattr(st, 'secrets') and st.secrets.get("GOOGLE_MAPS_API_KEY"):
+        GOOGLE_MAPS_API_KEY = st.secrets["GOOGLE_MAPS_API_KEY"]
+except ImportError:
+    pass
 
 # Google Maps API endpoints
 GOOGLE_GEOCODING_URL = "https://maps.googleapis.com/maps/api/geocode/json"
