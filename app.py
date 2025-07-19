@@ -27,54 +27,19 @@ def main():
     # Get API key from Streamlit secrets (this ensures it's loaded after Streamlit starts)
     api_key = ""
     
-    # Debug: Show what's available
-    st.write("🔍 Debug: Checking API key sources...")
-    
     try:
-        # Check if st.secrets exists
-        if hasattr(st, 'secrets'):
-            st.write("✅ st.secrets is available")
-            
-            # Show all available secrets (for debugging)
-            if hasattr(st.secrets, 'keys'):
-                available_secrets = list(st.secrets.keys())
-                st.write(f"📋 Available secrets: {available_secrets}")
-            else:
-                st.write("📋 No secrets keys available")
-            
-            # Check if GOOGLE_MAPS_API_KEY is in secrets
-            if "GOOGLE_MAPS_API_KEY" in st.secrets:
-                api_key = st.secrets["GOOGLE_MAPS_API_KEY"]
-                st.write(f"✅ API Key loaded from Streamlit secrets: {api_key[:10]}...")
-            else:
-                st.write("⚠️ GOOGLE_MAPS_API_KEY not found in st.secrets")
-                st.write("💡 Make sure you've set the secret in Streamlit Cloud dashboard")
+        # Check if st.secrets exists and get API key
+        if hasattr(st, 'secrets') and "GOOGLE_MAPS_API_KEY" in st.secrets:
+            api_key = st.secrets["GOOGLE_MAPS_API_KEY"]
         else:
-            st.write("⚠️ st.secrets is not available")
-        
-        # Fallback to environment variable
-        if not api_key:
+            # Fallback to environment variable
             import os
             api_key = os.getenv("GOOGLE_MAPS_API_KEY", "")
-            if api_key:
-                st.write(f"✅ API Key loaded from environment variable: {api_key[:10]}...")
-            else:
-                st.write("⚠️ No API key found in environment variables")
                 
     except Exception as e:
-        st.write(f"⚠️ Error loading API key: {e}")
-    
-    # Show final API key status
-    if api_key:
-        st.write(f"🎯 Final API key status: {'Valid' if len(api_key) > 20 else 'Invalid'} ({len(api_key)} characters)")
-    else:
-        st.write("❌ No API key available")
-        st.write("🔧 **To fix this:**")
-        st.write("1. Go to Streamlit Cloud dashboard")
-        st.write("2. Find your ScenicSync app")
-        st.write("3. Go to Settings → Secrets")
-        st.write("4. Add: `GOOGLE_MAPS_API_KEY = \"your_api_key_here\"`")
-        st.write("5. Save and restart the app")
+        # Silent fallback to environment variable
+        import os
+        api_key = os.getenv("GOOGLE_MAPS_API_KEY", "")
     
     # Initialize services
     maps_service = GoogleMapsServices(api_key)
