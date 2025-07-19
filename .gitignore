@@ -52,8 +52,8 @@ ENV/
 ehthumbs.db
 Thumbs.db
 
-# Streamlit cache
-.streamlit/
+# Streamlit cache (but allow config.toml)
+.streamlit/cache/
 
 # Logs
 *.log

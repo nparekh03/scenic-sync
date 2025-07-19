@@ -1,0 +1,9 @@
+[server]
+# Disable file watcher to avoid inotify limit issues
+fileWatcherType = "none"
+
+[theme]
+primaryColor = "#FF6B6B"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F0F2F6"
+textColor = "#262730" 
